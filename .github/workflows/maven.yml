@@ -30,13 +30,12 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
-
-    - name: List current directory
-      run: ls -a
-
-    - name: What in the target foler ?
       run: |
-        cd target
-        ls -a
-      
+        mvn -B package --file pom.xml
+        mkdir staging && cp target/* .jar staging
+
+    - name: Github-action artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-artifact
+        path: staging
